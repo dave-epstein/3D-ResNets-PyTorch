@@ -1,8 +1,6 @@
 import torch
 from torch import nn
-
-from models import resnet, pre_act_resnet, wide_resnet, resnext, densenet
-
+from models import resnext, pre_act_resnet, wide_resnet, resnet, densenet
 
 def generate_model(opt):
     assert opt.model in [
@@ -167,7 +165,7 @@ def generate_model(opt):
 
         if opt.pretrain_path:
             print('loading pretrained model {}'.format(opt.pretrain_path))
-            pretrain = torch.load(opt.pretrain_path)
+            pretrain = torch.load(opt.pretrain_path, map_location=torch.device("cuda", torch.cuda.current_device()))
             assert opt.arch == pretrain['arch']
 
             model.load_state_dict(pretrain['state_dict'])
