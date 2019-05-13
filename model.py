@@ -1,6 +1,10 @@
-import torch
 from torch import nn
-from models import resnext, pre_act_resnet, wide_resnet, resnet, densenet
+import torch
+try:
+    from models import resnext, pre_act_resnet, wide_resnet, resnet, densenet
+except:
+    from cnns.models import resnext, pre_act_resnet, wide_resnet, resnet, densenet
+
 
 def generate_model(opt):
     assert opt.model in [
@@ -165,7 +169,8 @@ def generate_model(opt):
 
         if opt.pretrain_path:
             print('loading pretrained model {}'.format(opt.pretrain_path))
-            pretrain = torch.load(opt.pretrain_path, map_location=torch.device("cuda", torch.cuda.current_device()))
+            pretrain = torch.load(opt.pretrain_path, map_location=torch.device(
+                "cuda", torch.cuda.current_device()))
             assert opt.arch == pretrain['arch']
 
             model.load_state_dict(pretrain['state_dict'])
@@ -194,7 +199,7 @@ def generate_model(opt):
                     model.classifier.in_features, opt.n_finetune_classes)
             else:
                 model.fc = nn.Linear(model.fc.in_features,
-                                            opt.n_finetune_classes)
+                                     opt.n_finetune_classes)
 
             parameters = get_fine_tuning_parameters(model, opt.ft_begin_index)
             return model, parameters
