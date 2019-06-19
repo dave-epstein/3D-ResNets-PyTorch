@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from models import resnext, pre_act_resnet, wide_resnet, resnet, densenet
+from .models import resnext, pre_act_resnet, wide_resnet, resnet, densenet
 
 def generate_model(opt):
     assert opt.model in [
