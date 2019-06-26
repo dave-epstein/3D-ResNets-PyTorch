@@ -25,6 +25,11 @@ class Compose(object):
     def __init__(self, transforms):
         self.transforms = transforms
 
+    def __refresh__(self):
+        for t in self.transforms:
+            try: t.__refresh__()
+            except: pass
+
     def __call__(self, img):
         for t in self.transforms:
             img = t(img)
